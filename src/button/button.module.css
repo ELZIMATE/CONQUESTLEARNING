@@ -1,0 +1,8 @@
+.button{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: rgb(72, 241, 0);
+    background-color: rgb(249, 249, 249);
+    cursor: pointer;
+    width: auto;
+    height: auto;
+}
