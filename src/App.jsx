@@ -37,6 +37,7 @@ import Eventmade from './eventmaker.jsx';
 import Adventurelog from './Missionsforyear2026.jsx';
 import Listmanipulation from './listmanipulation.jsx';
 import PracticeBeaconSystem from './practicebeaconsystem.jsx';
+import HelloWorld from './helloworld.jsx';
 function App() {
 
 const beacons = [
@@ -145,6 +146,7 @@ This one in particular has a members array being stored inside which is the lite
 <Adventurelog/>
 <Listmanipulation/>
 <PracticeBeaconSystem/>
+<HelloWorld/>
 <Footer/>
 
 </>

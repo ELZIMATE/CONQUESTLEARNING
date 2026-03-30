@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { loader, addBeacon, deleteBeacon, clearBeacons, rsvpBeacons} from '../api/Beaconapi.js'
+import { loader, addBeacon, deleteBeacon, clearBeacons, rsvpBeacons} from '.../api/Beaconapi.js'
 import BeaconMap from "../components/BeaconMap.jsx"
 
 
@@ -77,7 +77,7 @@ setBeacon(prev => prev.map(b => b.id === beaconID? updatedRow : b)) //use setBea
 
         
     }finally{
-        setLoading(false)
+        setLoading(false) 
     }
 
 
@@ -98,7 +98,7 @@ try {//try this and look for errors incase
         const updated = await addBeacon(beacon) //beacon is passed into addbeacon we now jump into api backend and it runs that func pause this shit
         //STEPP 7 - ALL BEACONS RETURNED UPDATED NOW IS HOLDING THE RESULT OF THE BACKEND ADD BEACON
         //WHICH IS TABLE WITH ADDED OBJ
-        setBeacon(updated) 
+        setBeacon(updated) //you app.jsx go on and rerender the beacons global state and tell all your bitch ass child functions to rerender to reflect the changes we made in the beacons global state
         console.log(updated.length)
         //by here updated is now storing the beacon in the BeaconMemory updated state
         //STEP 8 - USE THE SET BEACON SETTER TO CHANGE THE STATE TO THE UPDATED TABLE WITH THE NEW BEACON IN

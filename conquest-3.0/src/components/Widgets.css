@@ -1,0 +1,30 @@
+
+
+
+.btnlayout{
+    flex: row;
+    flex-direction: row;
+    padding: 20px;
+    border: 2px solid grey;
+    border-radius: 10%;
+    height: fit-content;
+
+}
+
+.calories{
+    flex: row;
+    flex-direction: row;
+    padding: 20px;
+    border: 2px solid grey;
+    border-radius: 10%;
+    height: fit-content;
+}
+
+.numbers{
+    flex: auto;
+    flex-direction: row;
+    padding: 20px;
+    border: 2px solid grey;
+    border-radius: 10%;
+    height: fit-content;
+}

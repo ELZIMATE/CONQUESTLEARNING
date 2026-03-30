@@ -27,7 +27,7 @@ export const addBeacon = async(beacon) => { //make an addbeacon function which t
         .from('beacon') //hey supabase from my beacons table 
         .insert([beacon]) //please put inside the beacon values as a beacon we just made with input
 
-    if(error) throw error //if an error is found please stop and throw error on screen
+     //if an error is found please stop and throw error on screen
 
     const{data: allBeacons, error:fetchError} = await supabase
     .from('beacon') //FROM THE BEACON TABLE NOW WITH THE NEW OBJ 

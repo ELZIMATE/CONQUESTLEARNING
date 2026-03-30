@@ -1,0 +1,44 @@
+
+.UIBG{
+    background-color: rgb(51, 51, 51);
+    color: aliceblue;
+    min-height: max-content;
+    font-family: monospace;
+
+}
+
+
+.navbar{
+    background-color: rgb(126, 126, 126);
+    font-family: monospace;
+    color: rgb(255, 255, 255);
+    border: 1px solid grey;
+    padding: 10px 20px;
+    border-radius: 4px;
+
+}
+
+.sidebar a {
+    color: aliceblue;
+    text-decoration: none;
+    font-family: monospace;
+    font-size: 12px;
+    padding: 8px 12px
+}
+
+.sidebar a:hover {
+    color: #ffffff;
+    background-color: #1a1a3a
+}
+
+
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap:16px;
+    padding: 20px;
+    width: 160px;
+    height: 100vh;
+    background-color: #0a0a1a;
+}

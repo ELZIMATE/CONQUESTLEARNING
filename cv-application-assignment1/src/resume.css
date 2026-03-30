@@ -1,0 +1,22 @@
+.name{
+    font-family: 'Times New Roman', Times, serif;
+    color: magenta;
+    align-self: start;
+}
+
+
+.ph{
+    color: brown;
+    font-family: 'Times New Roman', Times, serif;
+    align-self: start;
+   
+
+}
+
+
+.email{
+    color: gold;
+    font-family: 'Times New Roman', Times, serif;
+    align-self: start;
+    
+}

@@ -41,19 +41,26 @@ function App() {
 export default App
 
 //ON OPENING THE APP:
-//1 - the first thing that happens when app is opened is the app func runs and builds beaconsystem and beaconmap blueprint it mounts it on screen with null values as props havent been modified
+//1 - the first thing that happens when app is opened is the app func runs and builds 
+// beaconsystem and beaconmap blueprint it mounts it on screen with null values as props havent been modified
 // to make rerender.
-//2 - now it is mounted the fetch beacons function ran from here is auto programmed with useeffect to go 'holy shit run fetch beacons now something is mounted'
-//3 - fetch beacons setLoading to show loading message rerender in here than inside the BeaconSystem and pauses the whole function to go to back end 'hey backend give me the beacontable'
-//it gets it under the data name and passes it to setbeacons to put inside beaxons array loading is now false. 
+//2 - now it is mounted the fetch beacons function ran from here is auto 
+// programmed with useeffect to go 'holy shit run fetch beacons now something is mounted'
+//3 - fetch beacons setLoading to show loading message rerender in 
+// here than inside the BeaconSystem and pauses the whole function to go to back end 'hey backend give me the beacontable'
+//it gets it under the data name and passes it to setbeacons 
+// to put inside beaxons array loading is now false. 
 //4 - on rerender beacons is mapped to visibly show an empty boxes lol.
 
 //ON ADDING BEACON
-//5 - now when we type the input sensors when the value is changed 'ohhh shit this value in the box is changing' now makes event obj about what is changed typed or altered,
-//passes to setter the change the stateful local value of title, name, date, location inside beaconsystem only so now they are holding what is typed.
+//5 - now when we type the input sensors when the value is changed 'ohhh shit this value in the box is changing' 
+// now makes event obj about what is changed typed or altered,
+//passes to setter the change the stateful local value of title, name, date, location inside beaconsystem 
+// only so now they are holding what is typed.
 
 //INSIDE THE MAPPER happening on clicking the map and hovering over...
-//6 - Inside the map zone we click the map the event object is made from the mouseclick leaflet grabs lat and lng values from the event and puts them inside the setterlat lng to, 
+//6 - Inside the map zone we click the map the event object is made from the mouseclick 
+// leaflet grabs lat and lng values from the event and puts them inside the setterlat lng to, 
 //which we passed with props to from app.jsx to use in here are sent back into app.jsx altering the stateful there rerender the whole BeaconSYSTEM but not the other details,
 //why? becuase it is stored in memory statefuls and rerender doesnt touch this but now the beacon ibj has lat lng of where is clicked.
 //7 - another use map events takes mousemove for when the mouse is moved to activate the sethoverlat setter for stateful hoverlat/lng locally inside the beacon map as it is
