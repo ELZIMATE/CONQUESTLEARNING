@@ -1,25 +1,25 @@
 import { supabase } from "../../assets/features/tools/supabaseClient"
 
 
-export const fetchtimer = async(timers) => {
+export const fetchtimer = async(selectedDate) => {
   const { data: { session } } = await supabase.auth.getSession()
     if (!session?.user) {
     throw new Error("No active Supabase session. Log in again before saving timer data.")
 
 }
 
-const today = new Date().toISOString().split('T')[0]
+
 
 const{error, data} = await supabase
 .from("daily_logs")
 .select("*")
-.eq('user_id', session.user.id)
-.eq('date', today)
-.single()
+.eq('user_id', session.user.id) //take out the user id from the table which ever user session the userid is approapriately matched
+.eq('date', selectedDate) // take out the date which is the selected date we passed in from the selected date stateful we set with inputs
+.single() //make these two things into one obj
 
 
 if (error) throw error
-return data
+return data //send it back to who called it
 
 }
 

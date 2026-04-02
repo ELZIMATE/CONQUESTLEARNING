@@ -10,6 +10,7 @@ import { useEffect } from "react"
 import { supabase } from "./assets/features/tools/supabaseClient"
 import Quotes from "./components/QuoteBook"
 import { fetchtimer } from "./hooks/backendapi/Featuresapi"
+import History from "./components/History"
 
 
 
@@ -80,6 +81,7 @@ function App() {
     <Route path = "/ToDoList" element={<ToDoList {...feats} />}/>
     <Route path = "/ProgressBar" element={<ProgressBar {...feats}/>}/>
     <Route path="/QuoteBook" element={<Quotes {...feats}/>}/>
+    <Route path="/History" element={<History {...feats}/>}/>
   </Routes>
   
   )} 

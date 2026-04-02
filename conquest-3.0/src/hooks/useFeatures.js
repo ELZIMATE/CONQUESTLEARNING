@@ -22,6 +22,8 @@ const useFeatures = () => {
     const[quote, setQuote] = useState('')
     const[quoteCollection, setQuoteCollection] = useState([])
     const[quoteStatus, setQuoteStatus] = useState(false)
+    const[selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0])
+    const[dayData, setDayData] = useState(null)
 
     
 
@@ -32,6 +34,6 @@ return{entry, setEntry, counter, setCounter, list, setList, running,
     songopen, setSongOpen, category, setCategory, workTime, setWorkTime, 
     socialTime, setSocialTime, fitnessTime, setFitnessTime, leisureTime,
 setLeisureTime, submitted, setSubmitted, user, setUser, quote, setQuote, 
-quoteStatus, setQuoteStatus, quoteCollection, setQuoteCollection}
+quoteStatus, setQuoteStatus, quoteCollection, setQuoteCollection, selectedDate, setSelectedDate, setDayData, dayData}
 }
 export default useFeatures
