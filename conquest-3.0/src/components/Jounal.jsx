@@ -2,13 +2,13 @@
 import { useEffect } from "react"
 import { addentry, fetchjournal } from "../hooks/backendapi/Featuresapi"
 import NavBar from "./Navbar"
-const Journal = ({status, setStatus, user, entry, setEntry, ...feats}) => {
+const Journal = ({ dayData, journalDate, setJournalDate, setSelectedDate, selectedDate, status, setStatus, user, entry, setEntry, ...feats}) => {
 
 
 
     const makeEntry = async() => { //this function stores the data we need to pass to backend to put in the timer 
 
-            const today = new Date().toISOString().split('T')[0] //today box will hold current date
+            const today = new Date().toLocaleDateString('en-CA') //today box will hold current date
              const entries =  { //now all the checks are done we take the deats that were updated into the sattefuls and store it inside a timers box
     date: today,
     user_id: user.id,
@@ -26,20 +26,21 @@ const Journal = ({status, setStatus, user, entry, setEntry, ...feats}) => {
         useEffect(() => {
 
             const journalinput = async() => {
-            const data = await fetchjournal()
-
-            if (data){
-
-            setEntry(data.JournalEntry)
+            try {
+                const data = await fetchjournal(selectedDate)
+                const journalText = data?.JournalEntry ?? ""
+                setEntry(journalText || null)
+                
+                
+            } catch (error) {
+                setEntry("")
             }
 
             }
 
 
             journalinput()
-            }, [])
-
-
+            }, [selectedDate])
 
 
 
@@ -62,7 +63,10 @@ const Journal = ({status, setStatus, user, entry, setEntry, ...feats}) => {
         <div>
 
 
-        <button onClick ={() => {makeEntry()}}>Submit</button>                           
+        <button onClick ={() => {makeEntry()}}>Submit</button> 
+        <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}></input>
+
+        <p>{entry}</p>                          
         
         </div>
 

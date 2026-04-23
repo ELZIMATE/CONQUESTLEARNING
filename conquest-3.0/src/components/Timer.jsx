@@ -5,12 +5,14 @@ const Timer = ({workTime, setWorkTime, socialTime, setSocialTime, leisureTime, s
 const [saveError, setSaveError] = useState("") //we have a error state here which only the timer is using
 
 const formattime = (seconds) => { //we make a formatter function which runs to covert ms to hrs, s min
-    const hrs = Math.floor(seconds/3600) //hrs is converted 
-    const mins = Math.floor((seconds % 3600) / 60)//mins converted
-    const secs = seconds % 60 //secs all converted using appropriate mathematics
+    const hrs = Math.floor(seconds/3600) //hrs is converted put in hrs box for that digit in the timer
+    const mins = Math.floor((seconds % 3600) / 60)//mins converted put in mins box for that digit in the timer
+    const secs = seconds % 60 //secs all converted using appropriate mathematics put in secs box for the timer 
 
     return `${String(hrs).padStart(2, `0`)} : ${String(mins).padStart(2,`0`)} : ${String(secs).padStart(2, `0`)}` //when this is ran please go on and retun back convert the nums to text string
     // first do hrs in string form nad use padstart chained to it to make it  a 2 digit number and start it at 0.
+
+    // in other words make a string object from the hrs number, mins numer and secs number which is two digits long and starts 00
 }
 
 
@@ -51,7 +53,7 @@ useEffect(() => { //syncronised with the dependancies below in the box (1)
             return //return that back into the saveError for displaying.
         }
 
-        const today = new Date().toISOString().split('T')[0] //today box will hold current date
+        const today = new Date().toLocaleDateString('en-CA') //today box will hold current date
          const timers =  { //now all the checks are done we take the deats that were updated into the sattefuls and store it inside a timers box
 date: today,
 user_id: user.id,
@@ -78,10 +80,6 @@ user_id: user.id,
 
 return(
     <>
-    <p>{formattime(workTime)}</p>
-    <p>{formattime(leisureTime)}</p>
-    <p>{formattime(fitnessTime)}</p>
-    <p>{formattime(socialTime)}</p>
 
     <button onClick ={() => { //the button here is the setter the moment it is clicked
         isRunning(!running) //it changes the running value to the opposite of whatever it was before aka start stop which in turn sets the useffect off above (1)

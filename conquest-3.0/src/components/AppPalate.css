@@ -42,3 +42,52 @@
     height: 100vh;
     background-color: #0a0a1a;
 }
+
+.hud-container{
+    display: flex;
+    flex-direction: row;
+
+    width:100%;
+    min-height: 100vh;
+    height:fit-content;
+    background-color: rgb(32, 26, 24);
+
+}
+
+.hud-ring-section{
+
+    display: flex;
+    width: fit-content;
+    height: auto;
+    padding: 20%;
+    align-items: center;
+    flex-direction: column;
+
+
+}
+
+.hud-tasks-prev{
+    display: flex;
+    border: 1px solid rgb(179, 139, 69);
+    background-color: rgb(45, 37, 39);
+    padding: 16px;
+    align-items: center;
+    flex-direction: column;
+}
+
+.hud-authdetails{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 100px;
+    gap: 100px;
+}
+
+
+.hud-content{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    
+
+}
