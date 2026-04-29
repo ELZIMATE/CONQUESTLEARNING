@@ -6,11 +6,7 @@ const useFeatures = () => {
     const[list, setList] = useState([])
     const[running, isRunning] = useState(false) 
     const[status, setStatus] = useState(false)
-    const[calories, setCalories] = useState(0)
     const[song, setSong] = useState('')
-    const[game, setGame] = useState('')
-    const[calsopen, setCalsOpen] = useState(false)
-    const[gameopen, setGameOpen] = useState(false)
     const[songopen, setSongOpen] = useState(false)
     const[category, setCategory] = useState('work')
     const [workTime, setWorkTime] = useState(0)
@@ -37,9 +33,7 @@ const useFeatures = () => {
 
 
 return{entry, setEntry, counter, setCounter, list, setList, running, 
-    isRunning, status, setStatus, calories, setCalories, game, setGame, 
-    song, setSong, calsopen, setCalsOpen, gameopen, setGameOpen, 
-    songopen, setSongOpen, category, setCategory, workTime, setWorkTime, 
+    isRunning, status, setStatus, song, setSong, songopen, setSongOpen, category, setCategory, workTime, setWorkTime, 
     socialTime, setSocialTime, fitnessTime, setFitnessTime, leisureTime,
     setLeisureTime, submitted, setSubmitted, user, setUser, quote, setQuote, 
     quoteStatus, setQuoteStatus, quoteCollection, setQuoteCollection, selectedDate, 

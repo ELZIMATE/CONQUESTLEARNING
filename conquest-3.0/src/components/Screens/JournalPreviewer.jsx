@@ -7,13 +7,13 @@ import  { Link } from 'react-router-dom'
 
 return(
 <>
-
-<Link to="/jounal"> Journal 
+<div className = 'preview-card'>
+<Link to="/jounal"> 
 <div style={{maxHeight:'100px', overflow:'hidden'}}>
-        <p>{(dayData.JournalEntry || '').slice(0,100)}</p> {/*it will now show the user date journal entry for them based on the chosen date in here which we set wth inputter and useffect b4.*/}
+        <p> VIEW Journal</p>
  </div>       
 </Link>
-
+</div>
 </>
 
 )

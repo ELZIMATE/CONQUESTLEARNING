@@ -6,7 +6,7 @@ const NavBar = ({...feats}) => {
 
     return(
 <nav className='sidebar'>
-    <nav className='sidebar a'>
+    
         
 
 
@@ -15,9 +15,8 @@ const NavBar = ({...feats}) => {
     <Link to="/jounal"> Journal </Link>
     <Link to="/ToDoList"> ToDoList </Link>
     <Link to="/QuoteBook"> QuoteBook</Link>
-    <Link to="/History"> History </Link>
     </nav>
-</nav>
+
 
     )
 

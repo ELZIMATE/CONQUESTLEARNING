@@ -10,8 +10,10 @@ import { useEffect } from 'react'
 
 import NavBar from './Navbar'
 import JournalPrev from './Screens/JournalPreviewer'
+import QuotePrev from './Screens/QuotePreviewer'
+import ToDoListprev from './Screens/TodoListprev'
 
-const HUD = ({setSelectedDate, selectedDate, dayData, setDayData, ...feats}) => {
+const HUD = ({setSelectedDate, selectedDate, dayData, setDayData, listdata, list, quoteCollection, ...feats}) => {
 
     const backaday = () => { //this here is to go back in time a day when clicked
         const date = new Date(selectedDate) //we made a date storage const where here it will hold a new date object and assigning this date here to be whatever we put in the input date selector
@@ -63,25 +65,20 @@ datechange() //change it to the day
     <>
 
 
-  
-<div className='hud-container' >  
-    
-
-      <NavBar {...feats}/>
-
-<div className='hud-content'>
 
     
     <div className='hud-authdetails'>
 
            
           <img src="\src\assets\headshotprofile.JPG"  alt="Description of the image" style={{width:`100px`, height: `100px`}}/>
+          <h1> CONQUEST </h1>
           <h2>Elias</h2>
     </div>
 
-    <div style={{display:`flex`, flexDirection:`row`, alignItems: `center`}}>
+    <div style={{display:`flex`, flexDirection:`row`, alignItems: `center`, gap: `10px`, padding: `10px`}}>
 
         <button onClick={frwdaday}> NEXT </button>
+        <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}></input> {/*0 we set the input to the date we want, e obj delivers to change state*/} 
         <button onClick={backaday}> BACK </button>
     </div>
 
@@ -89,7 +86,7 @@ datechange() //change it to the day
 
 
 
-          <div style={{display:`flex`, flexDirection:`row`, alignItems:`flex-start`}}>
+          <div style={{display:`flex`, flexDirection:`column`, alignItems:`flex-start`}}>
 
             
 
@@ -97,56 +94,58 @@ datechange() //change it to the day
 
 
     
-    <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}></input> {/*0 we set the input to the date we want, e obj delivers to change state*/} 
+    
 
 
-    {dayData && (<div style={{display: `flex`, flexDirection:`column`, alignItems:`center`}}> {/*the day data here is now holding the changed date the user id for their backlog of the info*/}
+    
 
         
 
         <ProgressBar {...feats}
 
         
-        workTime={dayData.WorkTime ?? dayData.workTime ?? 0}
-        socialTime={dayData.SocialTime ?? dayData.socialTime ?? 0}
-        fitnessTime={dayData.FitnessTime ?? dayData.fitnessTime ?? 0}
-        leisureTime={dayData.LeisureTime ?? dayData.leisureTime ?? 0}/>
+        workTime={dayData?.WorkTime ?? dayData?.workTime ?? 0}
+        socialTime={dayData?.SocialTime ?? dayData?.socialTime ?? 0}
+        fitnessTime={dayData?.FitnessTime ?? dayData?.fitnessTime ?? 0}
+        leisureTime={dayData?.LeisureTime ?? dayData?.leisureTime ?? 0}/>
 
 
-<div style={{maxHeight: '100px', overflow:'hidden'}}>
-    {(dayData.ToDos || []).sort((a,b) => a.priority - b.priority).slice(0, 3).map((t, index) => (<li key={index}> {/* the day data array is being looped and we are checking if there 
-    is an array inside and if there is it will sort out each of them by priority and use slice to slice out 0 - 3 */}
-        
-            {typeof t === 'string' ? t : t.task} {t.priority} {/* check the type of each individual t element we loop and if it is a string than just put is as is otherwise if t is obj just show t.task */}
-        </li>
-    ))}
-</div>
 
-<JournalPrev dayData={dayData}/>
+
+   
     
-    </div>)}
+
+<div style={{display: `flex`, flexDirection:`row`, alignItems:`center`, gap:`16px`, padding: '10px', width: `100%`}}>
+<JournalPrev dayData={dayData}/>
+ <ToDoListprev dayData={dayData}/>
+
+
+</div>
+<div style={{padding: `10px`, width:`100%`}}>
+<QuotePrev quoteCollection={quoteCollection}/>    
+    
+</div>
+    
+    
 
     </div>
 
-    <div style={{display:`flex`, flexDirection:`column`, alignItems:`flex-end`}}>
+    <div style={{padding: `10px`, width:`100%`}}>
           
           <Widgets {...feats} />
 
 
-        </div>\
+        </div>
 
 
 
         
-</div>
-          
-
-
 
           
 
 
 
+          
 
 
 
@@ -155,8 +154,6 @@ datechange() //change it to the day
 
 
 
-
-      </div>
 
       
 

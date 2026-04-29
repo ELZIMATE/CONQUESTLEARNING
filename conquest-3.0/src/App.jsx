@@ -10,8 +10,7 @@ import { useEffect } from "react"
 import { supabase } from "./assets/features/tools/supabaseClient"
 import Quotes from "./components/QuoteBook"
 import { fetchtimer } from "./hooks/backendapi/Featuresapi"
-import History from "./components/History"
-
+import NavBar from "./components/Navbar"
 
 
 
@@ -64,6 +63,10 @@ function App() {
   {!user ? (<Login onLogin={handleLogin}/>) :
   (
 
+    <div className='hud-container'>
+  <NavBar {...feats}/>
+  <div className='hud-content'>
+
   <Routes>
     
     <Route path = "/" element={<HUD {...feats} />}/> {/* creates a routing path which directs the website to the hud when "/" is put in the top url and puts all the hooks with ...feats copied in */}
@@ -73,6 +76,8 @@ function App() {
     <Route path = "/ProgressBar" element={<ProgressBar {...feats}/>}/>
     <Route path="/QuoteBook" element={<Quotes {...feats}/>}/>
   </Routes>
+  </div>
+  </div>
   
   )} 
   </BrowserRouter>)

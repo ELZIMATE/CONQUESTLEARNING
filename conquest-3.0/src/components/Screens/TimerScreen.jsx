@@ -58,7 +58,6 @@ return(
 
     <input value={waketime} type="time" onChange={(e) => setWakeTime(e.target.value)}></input>
     <input value={sleeptime} type="time" onChange={(e) => setSleepTime(e.target.value)}></input>
-    <NavBar {...feats}/>
     </div>
     </>
 

@@ -72,7 +72,7 @@ const Journal = ({ dayData, journalDate, setJournalDate, setSelectedDate, select
 
 
 
-        <NavBar {...feats}/>
+        
         </>
 
     )

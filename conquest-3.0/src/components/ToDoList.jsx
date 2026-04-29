@@ -50,10 +50,7 @@ const ToDoList = ({list, setList, user, listdate, selectedDate, setSelectedDate,
     }, [selectedDate])
 
 
-    useEffect(() => {
-
-        
-    })
+ 
 
 
     const toggleComplete = async(index) => {
@@ -102,7 +99,7 @@ const today = new Date().toLocaleDateString('en-CA')
 
        await addList(thing) //this then takes it and sends the updated version fo the lsit with the new obj to be input inside the backend
 
-        setListData(prev => [...prev, tskobj])
+        setListData(prev => [...(prev || []), tskobj])
 setTask('')
 
     }
@@ -144,9 +141,7 @@ return(
 
 
 
-    <div>
-        <NavBar {...feats}/>
-    </div>
+
     </>
 
     )}
