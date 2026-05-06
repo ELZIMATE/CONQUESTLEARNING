@@ -31,10 +31,10 @@ const Widgets = ({user, game, setGame, song, setSong, calories, setCalories, gam
 return(
     <>
     
-   <div style={{display: `flex`, flexDirection: 'row', height:`100vh`}}> 
+   <div style={{display: `flex`, flexDirection: 'row', height:`fit-content`,}}> 
     
 
-<div className="numbers">
+<div className="preview-card">
     {songopen ?
     <input value={song} onChange={(e) => setSong(e.target.value)}/> :
     <b>{song || `SOTW `}</b>}

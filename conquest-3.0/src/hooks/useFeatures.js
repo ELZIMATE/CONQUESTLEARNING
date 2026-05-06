@@ -18,6 +18,7 @@ const useFeatures = () => {
     const[submitted, setSubmitted] = useState([])
     const[user, setUser] = useState(null)
     const[quote, setQuote] = useState('')
+    const[task, setTask] = useState('')
     const[quoteCollection, setQuoteCollection] = useState([])
     const[quoteStatus, setQuoteStatus] = useState(false)
     const[selectedDate, setSelectedDate] = useState(new Date().toLocaleDateString('en-CA'))
@@ -38,6 +39,6 @@ return{entry, setEntry, counter, setCounter, list, setList, running,
     setLeisureTime, submitted, setSubmitted, user, setUser, quote, setQuote, 
     quoteStatus, setQuoteStatus, quoteCollection, setQuoteCollection, selectedDate, 
     setSelectedDate, setDayData, dayData, listdate, setListDate, listdata, setListData, 
-    journalDate, setJournalDate, weekstart, setWeekStart, waketime, setWakeTime, sleepTime, setSleepTime}
+    journalDate, setJournalDate, weekstart, setWeekStart, waketime, setWakeTime, sleepTime, setSleepTime, task, setTask}
 }
 export default useFeatures

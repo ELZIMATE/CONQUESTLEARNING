@@ -64,22 +64,24 @@ datechange() //change it to the day
     
     <>
 
-
-
-    
-    <div className='hud-authdetails'>
-
-           
-          <img src="\src\assets\headshotprofile.JPG"  alt="Description of the image" style={{width:`100px`, height: `100px`}}/>
-          <h1> CONQUEST </h1>
-          <h2>Elias</h2>
-    </div>
-
-    <div style={{display:`flex`, flexDirection:`row`, alignItems: `center`, gap: `10px`, padding: `10px`}}>
+<div className='hud-container'>
+    <div className='hud-content'>
+        
+    <div style={{display:`flex`, flexDirection:`row`, alignItems: `center`, justifyContent: 'space-between', width: '100%', gap: `10px`, padding: `10px`}}>
 
         <button onClick={frwdaday}> NEXT </button>
         <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}></input> {/*0 we set the input to the date we want, e obj delivers to change state*/} 
         <button onClick={backaday}> BACK </button>
+    </div>
+
+
+    
+    <div className='profile-card'>
+
+           
+          <img className='profile-pic' src="\src\assets\headshotprofile.JPG"  alt="Description of the image"/>
+          <h1> CONQUEST </h1>
+          <h2>Elias</h2>
     </div>
 
 
@@ -99,8 +101,8 @@ datechange() //change it to the day
 
     
 
-        
-
+        <div className = 'progress-card'>
+        <h3 style={{color: 'rgb(179, 139, 69)', marginBottom: '8px', letterSpacing: '2px'}}>TIME PROGRESSION: </h3>
         <ProgressBar {...feats}
 
         
@@ -108,6 +110,7 @@ datechange() //change it to the day
         socialTime={dayData?.SocialTime ?? dayData?.socialTime ?? 0}
         fitnessTime={dayData?.FitnessTime ?? dayData?.fitnessTime ?? 0}
         leisureTime={dayData?.LeisureTime ?? dayData?.leisureTime ?? 0}/>
+        </div>
 
 
 
@@ -159,12 +162,12 @@ datechange() //change it to the day
 
 
 
-    
+    </div>
 
        
           
 
-    
+    </div>
 
 
 

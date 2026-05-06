@@ -4,9 +4,10 @@ import useFeatures from "../hooks/useFeatures"
 import { useEffect } from "react"
 import {fetchList, addList} from "../hooks/backendapi/Featuresapi"
 import { removeItem } from "../hooks/backendapi/Featuresapi"
+import ToDoBar from "./Screens/ToDoBar"
 
 
-const ToDoList = ({list, setList, user, listdate, selectedDate, setSelectedDate, setListDate, setListData, listdata, ...feats }) => {
+const ToDoList = ({list, setList, task, setTask, user, listdate, selectedDate, setSelectedDate, setListDate, setListData, listdata, ...feats }) => {
 
 
 
@@ -14,9 +15,10 @@ const ToDoList = ({list, setList, user, listdate, selectedDate, setSelectedDate,
     console.log('list value:', list, 'type:', typeof list)
 
 
-    const[task, setTask] = useState('')
+    
     const[complete, setComplete] = useState(false)
     const[priority, setPriority] = useState(1)
+    const tasks = listdata || []
 
 
     
@@ -54,10 +56,11 @@ const ToDoList = ({list, setList, user, listdate, selectedDate, setSelectedDate,
 
 
     const toggleComplete = async(index) => {
-         const today = new Date().toLocaleDateString('en-CA') 
+         const today = selectedDate || new Date().toLocaleDateString('en-CA') 
 
-        const updates = [...listdata]
-        updates[index].complete = !updates[index].complete
+        const updates = tasks.map((item, i) => (
+            i === index ? { ...item, complete: !item.complete } : item
+        ))
         setListData(updates)
         await addList({
                 date: today,
@@ -72,8 +75,8 @@ const ToDoList = ({list, setList, user, listdate, selectedDate, setSelectedDate,
 
     const ListRemoval = async(index) => {
 
-const today = new Date().toLocaleDateString('en-CA')
-        const data = listdata.filter((_, i) => i !== index)
+const today = selectedDate || new Date().toLocaleDateString('en-CA')
+        const data = tasks.filter((_, i) => i !== index)
         setListData(data)
         await addList({
                 date: today,
@@ -88,11 +91,11 @@ const today = new Date().toLocaleDateString('en-CA')
 
 
     const Listadd = async() => { //this function constructs the updated version of the to do list each time we change some shit 
-        const today = new Date().toLocaleDateString('en-CA') //today box will hold current date
+        const today = selectedDate || new Date().toLocaleDateString('en-CA') //today box will hold current date
         const thing = { //the thing object here constructs the updated lister with the added task obj
             date: today,
             user_id: user.id,
-              ToDos: [...(listdata || []), tskobj]
+              ToDos: [...tasks, tskobj]
             
 
         }
@@ -123,15 +126,17 @@ return(
 
     </select>
     <button onClick={Listadd}>Add to List</button> {/*button here will be clicked and List Add will run when clicking it*/}
+
+    <ToDoBar tasks={tasks}/>
     
     
 
-    {(listdata || []).map((lis, index) => 
+    {tasks.map((lis, index) => 
     
     <li key={index}>
 
 
-        {lis.priority} {lis.task}
+        {lis.priority} - {lis.task}
         <input type="checkbox" checked={lis.complete}
         onChange={() => {toggleComplete(index)}}
         ></input>
