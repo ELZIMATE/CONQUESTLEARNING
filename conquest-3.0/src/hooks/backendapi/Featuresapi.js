@@ -1,7 +1,34 @@
-import { data } from "react-router-dom"
 import { supabase } from "../../assets/features/tools/supabaseClient"
 
 const getDateOrToday = (selectedDate) => selectedDate ?? new Date().toISOString().split('T')[0]
+
+const updateOrInsert = async(table, payload, match) => {
+  const updatePayload = { ...payload }
+  Object.keys(match).forEach((key) => {
+    delete updatePayload[key]
+  })
+
+  let updateQuery = supabase
+    .from(table)
+    .update(updatePayload)
+
+  Object.entries(match).forEach(([key, value]) => {
+    updateQuery = updateQuery.eq(key, value)
+  })
+
+  const { data: updatedRows, error: updateError } = await updateQuery.select()
+
+  if (updateError) throw updateError
+  if (updatedRows.length > 0) return updatedRows
+
+  const { data, error } = await supabase
+    .from(table)
+    .insert([payload])
+    .select()
+
+  if (error) throw error
+  return data
+}
 
 export const fetchtimer = async(selectedDate) => {
   const { data: { session } } = await supabase.auth.getSession()
@@ -33,8 +60,6 @@ export const fetchList = async(listdate) => {
 
 }
 
-const today = new Date().toISOString().split('T')[0]
-
 const{error, data} = await supabase
 .from("daily_logs")
 .select("*")
@@ -53,6 +78,7 @@ export const removeItem = async(index) => {
       .delete()
       .eq('index', index)
 
+      if (error) throw error
       return data
 
 }
@@ -66,12 +92,10 @@ export const addList = async(thing) => {
     throw new Error("No active Supabase session. Log in again before saving timer data.")
   }
 
-    const{ data, error} = await supabase
-    .from("daily_logs")
-    .upsert([thing], {onConflict: 'user_id, date'})
-        
-       if (error) throw error
-       return data 
+    return updateOrInsert("daily_logs", thing, {
+      user_id: thing.user_id,
+      date: thing.date
+    })
     
 
 }
@@ -95,11 +119,10 @@ export const addtimer = async(timers) => {
     throw new Error("No active Supabase session. Log in again before saving timer data.")
   }
 
-    const{ error} = await supabase
-    .from("daily_logs")
-    .upsert([timers], {onConflict: 'user_id, date'})
-        
-       if (error) throw error
+    return updateOrInsert("daily_logs", timers, {
+      user_id: timers.user_id,
+      date: timers.date
+    })
 }
 
 
@@ -145,12 +168,10 @@ export const addentry = async(entries) => {
     throw new Error("No active Supabase session. Log in again before saving timer data.")
   }
 
-    const{ data, error} = await supabase
-    .from("daily_logs")
-    .upsert([entries], {onConflict: 'user_id, date'})
-        
-       if (error) throw error
-       return data 
+    return updateOrInsert("daily_logs", entries, {
+      user_id: entries.user_id,
+      date: entries.date
+    })
     
 
 
@@ -163,15 +184,14 @@ export const addSOTW = async(song, weekstart) => {
   const { data: {session}} = await supabase.auth.getSession()
 
 
-  const{data, error} =  await supabase
-  .from("weekly_logs")
-  .upsert([{user_id: session.user.id,
+  return updateOrInsert("weekly_logs", {
+    user_id: session.user.id,
     WeekStart: weekstart,
     SOTW: song
-  }], {onConflict: 'user_id, WeekStart'})
-
-    if (error) throw error
-    return data
+  }, {
+    user_id: session.user.id,
+    WeekStart: weekstart
+  })
 }
 
 
@@ -240,4 +260,41 @@ const{error, data} = await supabase
 
 if (error) throw error
 return data
+}
+
+export const fetchRoutines = async() => {
+  const { data: { session } } = await supabase.auth.getSession()
+    if (!session?.user) {
+    throw new Error("No active Supabase session. Log in again before saving timer data.")
+
+}
+
+
+const{error, data} = await supabase
+.from("Routines")
+.select("*")
+.eq('user_id', session.user.id)
+
+
+if (error) throw error
+return data
+}
+
+
+
+export const addRoutine = async(Routine) => {
+  const { data: { session } } = await supabase.auth.getSession()
+  console.log('session in addtimer:', session)
+
+  if (!session?.user) {
+    throw new Error("No active Supabase session. Log in again before saving timer data.")
+  }
+
+    return updateOrInsert("Routines", Routine, {
+      user_id: Routine.user_id
+    })
+    
+
+
+
 }
