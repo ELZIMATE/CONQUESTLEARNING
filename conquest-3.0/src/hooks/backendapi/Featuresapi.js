@@ -6,8 +6,8 @@ const updateOrInsert = async(table, payload, match) => { //update or insert func
 // table we want to update or insert into, this works brackets to brackets when Update or Insert is called within the functions callback to match and puts in the table we name from the backend into the table const param, same goes for the others
 //payload const param gets filled with the whole thing object storing the whole todos list. 
 // the payload which is the data we want to update or insert, and the match which is the criteria for finding the row to update, match is filled with the user id and date to find the specific row for that user and date
-  const updatePayload = { ...payload } //
-  Object.keys(match).forEach((key) => {
+  const updatePayload = { ...payload } //make a box called update payload and what it does is copy the whole todos list and 
+  Object.keys(match).forEach((key) => { //object.keys takes the matched date and the id and for each item inside the array it will delete all the other ones which dont match the criteria and leave the date and userid for ones that do 
     delete updatePayload[key]
   })
 
