@@ -294,7 +294,7 @@ export const addRoutine = async(Routine) => {
   }
 
     return updateOrInsert("Routines", Routine, {
-      user_id: Routine.user_id
+      user_id: Routine.user_id,
     })
     
 
