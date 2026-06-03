@@ -6,17 +6,21 @@ const updateOrInsert = async(table, payload, match) => { //update or insert func
 // table we want to update or insert into, this works brackets to brackets when Update or Insert is called within the functions callback to match and puts in the table we name from the backend into the table const param, same goes for the others
 //payload const param gets filled with the whole thing object storing the whole todos list. 
 // the payload which is the data we want to update or insert, and the match which is the criteria for finding the row to update, match is filled with the user id and date to find the specific row for that user and date
-  const updatePayload = { ...payload } //
-  Object.keys(match).forEach((key) => {
-    delete updatePayload[key]
+  const updatePayload = { ...payload } //created a box input the whole todos object in 
+  Object.keys(match).forEach((key) => { //object.keys converts the match object holding user id and date to array loops through it and takes each item or key in it and then deletes the user ids and date from the whole payload todos list leaving only todos.
+    delete updatePayload[key] //than it deletes those items from the update payload box so that we dont have any conflicts when we try to update the row with the user id and date which are the match criteria, we only want to update the todos list item in that row not the user id and date which are the same for both updating and inserting
   })
 
-  let updateQuery = supabase
-    .from(table)
-    .update(updatePayload)
 
-  Object.entries(match).forEach(([key, value]) => {
-    updateQuery = updateQuery.eq(key, value)
+  //UpdateorInsert when called bracets to bracets matches params and args of table with supabase table, than paylaod with the todos list there, than match with out user id and date obj we fish with chaining out of the thign object stored individual thing todo list item,
+  // than put the payload table of todos inside a const box updare payload, than take the match obj and convert it to array with object.keys and loop each user id and date item there, than delete that from the todolist payload.
+
+  let updateQuery = supabase //access supabase client via the this update query box 
+    .from(table) //go into the supabase table we want to update or insert into which is the table const param we passed in
+    .update(updatePayload) //now with the payload todolist we updated with the match criiteria update the row of the table with this new changes
+//WORK OUT THE BOTTOM WHAT IT MEANS IS WHERE WE LEFT OFF -> 
+  Object.entries(match).forEach(([key, value]) => { //inside the supabase table where updated todolist is stored take the match id and date
+    updateQuery = updateQuery.eq(key, value) //find where they are matched or equal inside the updated table.
   })
 
   const { data: updatedRows, error: updateError } = await updateQuery.select()
@@ -26,7 +30,7 @@ const updateOrInsert = async(table, payload, match) => { //update or insert func
 
   const { data, error } = await supabase
     .from(table)
-    .upsert([payload])
+    .insert([payload])
     .select()
 
   if (error) throw error
