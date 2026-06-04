@@ -40,6 +40,24 @@ const ToDoList = ({task, setTask, user, selectedDate, setSelectedDate, setListDa
     const tasks = listdata || []
 
 
+
+        const backday = () => { //this here is to go back in time a day when clicked
+        const date = new Date(selectedDate) //we made a date storage const where here it will hold a new date object and assigning this date here to be whatever we put in the input date selector
+        date.setDate(date.getDate() - 1) //this will than take away one from the date
+        setSelectedDate(date.toISOString().split('T')[0]) //we set our selected date to be that date after we took away 1 
+
+    }
+
+
+
+    const frwdday = () => {
+        const date = new Date(selectedDate)
+        date.setDate(date.getDate() + 1)
+        setSelectedDate(date.toISOString().split('T')[0])
+
+    }
+
+
     useEffect(() => { //synchronisation of useEffect when 
 
         const LISTMAKE = async() => {
@@ -155,8 +173,15 @@ const clearTask = tasks[index] //the task to remove is put in this clear task bo
 return(
     <>
     <div>
+
+
+
+
         <button onClick={() => setOpen(!open)}>Add a task
         </button>
+
+        <button onClick={backday}></button>
+        <button onClick ={frwdday}></button>
 
 
         {open && (
