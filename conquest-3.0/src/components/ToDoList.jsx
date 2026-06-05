@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react"
 import {fetchList, addList, fetchRoutines, addRoutine} from "../hooks/backendapi/Featuresapi"
 import ToDoBar from "./Screens/ToDoBar"
+import TaskItem from "./Screens/TaskItem"
 
 const getTaskKey = (item) => `${item.type || ''}|${item.priority || ''}|${item.task || item}` //make a function called get taskKey in here get the item type if empty use empty string instead and do same for setPriority
 //now try get tasktext if it doesnt exist just take the whole item obj. Each individual | between these are separators 
 //this will end up storing Routine|1|Gym.
 
-const makeDailyRoutine = (routineTask) => ({ //make Daily routine FUNCTION it takes the routine task and copies it in than changes the type of it to be a Routine type task and makes the completion box unchecked.
+const makeDailyRoutine = (routineTask) => ({ //make Daily routine FUNCTION it takes the routine task and 
+// copies it in than changes the type of it to be a Routine type task and makes the completion box unchecked.
     ...routineTask,
     type: routineTask.type || 'Routine',
     complete: false
 })
 
-const mergeRoutinesForDay = (dayTasks = [], routineTasks = []) => { //day tasks array is assigned and routine tasks array is assigned 
+const mergeRoutinesForDay = (dayTasks = [], routineTasks = [], selectedDate) => { //day tasks array is assigned and routine tasks array is assigned 
+    const todayName = new Date(selectedDate || new Date()).toLocaleDateString('en-CA', { weekday: 'long' }) //today name is made and it is the current day of the week in string form like Monday or Tuesday etc
     const taskKeys = new Set(dayTasks.map(getTaskKey)) // a task key box is made and inside here it makes a new set where it takes the day taks loops through to store each of its task keys.
-    const missingRoutines = routineTasks //than a missing routines box is made which will inside routinetasks array filter each of the individual routine taks checks if the daytasks has this routine task already 
-        .filter((routineTask) => !taskKeys.has(getTaskKey(routineTask))) //filters and removes them from that day if it is alr there
+    const missingRoutines = routineTasks //than a missing routines box is made which will inside routinetasks array filter each of the 
+    // individual routine taks checks if the daytasks has this routine task already 
+        .filter((routineTask) => !taskKeys.has(getTaskKey(routineTask))
+    && (!routineTask.days || routineTask.days.includes(todayName))) //filters and removes them from that day if it is alr there
         .map(makeDailyRoutine) //maps the remaining ones which do have the routine tag as their type.
 
     return {
@@ -30,6 +35,8 @@ const ToDoList = ({task, setTask, user, selectedDate, setSelectedDate, setListDa
     const[type, setType] = useState('Routine')
     const[routine, setRoutine] = useState([])
     const[saveError, setSaveError] = useState('')
+    const[days, setDays] = useState([])
+    const[open, setOpen] = useState(false)
     const tasks = listdata || []
 
 
@@ -50,7 +57,7 @@ const ToDoList = ({task, setTask, user, selectedDate, setSelectedDate, setListDa
 
                 const listData = await fetchList(today)
                 const dayTasks = Array.isArray(listData?.ToDos) ? listData.ToDos : []
-                const { tasks: dailyTasks, changed } = mergeRoutinesForDay(dayTasks, loadedRoutines)
+                const { tasks: dailyTasks, changed } = mergeRoutinesForDay(dayTasks, loadedRoutines, today)
 
                 setListData(dailyTasks)
 
@@ -108,6 +115,8 @@ const ToDoList = ({task, setTask, user, selectedDate, setSelectedDate, setListDa
     const ListRemoval = async(index) => {
 
 const today = selectedDate || new Date().toLocaleDateString('en-CA')
+const clearTask = tasks[index] //the task to remove is put in this clear task box
+
         const data = tasks.filter((_, i) => i !== index)
         setListData(data)
         try {
@@ -118,6 +127,19 @@ const today = selectedDate || new Date().toLocaleDateString('en-CA')
               ToDos: data
 
         })
+        if(clearTask.type === 'Routine') { //if the task we want to remove is a routine as we got from the select elemenet than
+            const updatedRoutine = routine.filter(r => getTaskKey(r) !== getTaskKey(clearTask)) //make a updated routine box where we filter through each routine and 
+            // remove that task and use gettaskkey to format them to be that structure of routine|1|gym for example and check if it is the 
+            // same as the clear task we want to remove. If it is not the same than we keep it in the routine if it is the same than we remove it from the routine
+
+            setRoutine(updatedRoutine) //go into the setRoutine and update the routine to be the updated routine with that task removed from it
+            await addRoutine({ //then we also need to update the routine in the backend to remove that task from the routine list in the backend as well so we call 
+            // addRoutine and send it the updated routine with that task removed from it
+                user_id: user.id,
+                tasks: updatedRoutine
+            })
+            //this simply updates backend side 
+        }
         } catch (error) {
             console.error('Unable to remove task:', error)
             setSaveError(error.message)
@@ -128,70 +150,41 @@ const today = selectedDate || new Date().toLocaleDateString('en-CA')
 
 
 
-    const Listadd = async() => { //this function constructs the updated version of the to do list each time we change some shit 
-           console.log('task at submit:', task)
-        const taskText = task.trim()
-
-        if (!taskText) return
-
-
-
-    console.log('tskobj at submit:', newTask)
-        const today = selectedDate || new Date().toLocaleDateString('en-CA') //today box will hold current date
-        const thing = { //the thing object here constructs the updated lister with the added task obj
-            date: today,
-            user_id: user.id,
-              ToDos: [...tasks, newTask]
-            
-
-        }
-
-        try {
-            setSaveError('')
-
-       if(type === 'Routine') {
-        await addRoutine({
-            user_id: user.id,
-            tasks: [...routine, newTask]
-        })
-        setRoutine(prev => [...prev, newTask])
-       }
-
-       await addList(thing) //this then takes it and sends the updated version fo the lsit with the new obj to be input inside the backend
-
-        setListData(prev => [...(prev || []), newTask])
-setTask('')
-        } catch (error) {
-            console.error('Unable to add task:', error)
-            setSaveError(error.message)
-        }
-
-    }
+    
 
 return(
     <>
-
-    <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}></input>
-    <input value={task} onChange={(e) => 
-        {console.log('typing:', e.target.value)
-        
-        setTask(e.target.value)}}></input>
-    <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-                <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-
-    </select>
+    <div>
+        <button onClick={() => setOpen(!open)}>Add a task
+        </button>
 
 
-    <select value={type} onChange={(e) => setType(e.target.value)}>
-        <option value="Routine">Routine</option>
-        <option value="Schedule">Scheduled</option>
-        <option value="Spontanous">Spontaneous</option>
+        {open && (
+            <TaskItem
+                task={task}
+                priority={priority}
+                type={type}
+                days={days}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                user={user}
+                tasks={tasks}
+                setListData={setListData}
+                setTask={setTask}
+                setPriority={setPriority}
+                setType={setType}
+                setDays={setDays}
+                routine={routine}
+                setRoutine={setRoutine}
+                setSaveError={setSaveError}
+                onClose={() => setOpen(false)}
+            />
+        )}
+    </div>
 
+   
 
-    </select>
-    <button onClick={Listadd}>Add to List</button> {/*button here will be clicked and List Add will run when clicking it*/}
+    
 
     {saveError ? <p>{saveError}</p> : null}
 
@@ -211,15 +204,7 @@ return(
         <button onClick={() => {ListRemoval(index)}}>Remove Task</button>
 
     </li>)}
-
-
-
-
-    </>
-
-    )}
-
-
-
+</>
+)}
 
 export default ToDoList
