@@ -203,7 +203,7 @@ export const addSOTW = async(song, weekstart) => {
 
 
 export const fetchSOTW = async(weekstart) => {
-   const { data: { session } } = await supabase.auth.getSession()
+   const { data: { session } } = await supabase.auth.getSession() 
     if (!session?.user) {
     throw new Error("No active Supabase session. Log in again before saving timer data.")
   }
@@ -305,3 +305,45 @@ export const addRoutine = async(Routine) => {
 
 
 }
+
+export const addKaizen = async(kaizen, date) => {
+  const { data: {session}} = await supabase.auth.getSession()
+
+
+  return updateOrInsert("daily_logs", {
+    user_id: session.user.id,
+    Date: date,
+    kaizen: kaizen
+  }, {
+    user_id: session.user.id,
+    Date: date
+  })
+}
+
+
+
+
+export const fetchKaizen = async(date) => {
+   const { data: { session } } = await supabase.auth.getSession()
+    if (!session?.user) {
+    throw new Error("No active Supabase session. Log in again before saving timer data.")
+  }
+
+  const{data, error} = await supabase
+  .from('daily_logs')
+  .select('*')
+  .eq('user_id', session.user.id)
+  .eq('Date', date)
+  .maybeSingle()
+
+  if (error) throw error
+  return data 
+
+
+
+
+
+
+}
+
+
