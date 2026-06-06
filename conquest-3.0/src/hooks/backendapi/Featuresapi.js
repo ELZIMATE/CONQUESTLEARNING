@@ -6,17 +6,21 @@ const updateOrInsert = async(table, payload, match) => { //update or insert func
 // table we want to update or insert into, this works brackets to brackets when Update or Insert is called within the functions callback to match and puts in the table we name from the backend into the table const param, same goes for the others
 //payload const param gets filled with the whole thing object storing the whole todos list. 
 // the payload which is the data we want to update or insert, and the match which is the criteria for finding the row to update, match is filled with the user id and date to find the specific row for that user and date
-  const updatePayload = { ...payload } //make a box called update payload and what it does is copy the whole todos list and 
-  Object.keys(match).forEach((key) => { //object.keys takes the matched date and the id and for each item inside the array it will delete all the other ones which dont match the criteria and leave the date and userid for ones that do 
+  const updatePayload = { ...payload } //
+  Object.keys(match).forEach((key) => {
     delete updatePayload[key]
   })
 
-  let updateQuery = supabase
-    .from(table)
-    .update(updatePayload)
 
-  Object.entries(match).forEach(([key, value]) => {
-    updateQuery = updateQuery.eq(key, value)
+  //UpdateorInsert when called bracets to bracets matches params and args of table with supabase table, than paylaod with the todos list there, than match with out user id and date obj we fish with chaining out of the thign object stored individual thing todo list item,
+  // than put the payload table of todos inside a const box updare payload, than take the match obj and convert it to array with object.keys and loop each user id and date item there, than delete that from the todolist payload.
+
+  let updateQuery = supabase //access supabase client via the this update query box 
+    .from(table) //go into the supabase table we want to update or insert into which is the table const param we passed in
+    .update(updatePayload) //now with the payload todolist we updated with the match criiteria update the row of the table with this new changes
+//WORK OUT THE BOTTOM WHAT IT MEANS IS WHERE WE LEFT OFF -> 
+  Object.entries(match).forEach(([key, value]) => { //inside the supabase table where updated todolist is stored take the match id and date
+    updateQuery = updateQuery.eq(key, value) //find where they are matched or equal inside the updated table.
   })
 
   const { data: updatedRows, error: updateError } = await updateQuery.select()
@@ -26,7 +30,7 @@ const updateOrInsert = async(table, payload, match) => { //update or insert func
 
   const { data, error } = await supabase
     .from(table)
-    .upsert([payload])
+    .insert([payload])
     .select()
 
   if (error) throw error
@@ -199,7 +203,7 @@ export const addSOTW = async(song, weekstart) => {
 
 
 export const fetchSOTW = async(weekstart) => {
-   const { data: { session } } = await supabase.auth.getSession()
+   const { data: { session } } = await supabase.auth.getSession() 
     if (!session?.user) {
     throw new Error("No active Supabase session. Log in again before saving timer data.")
   }
@@ -301,3 +305,45 @@ export const addRoutine = async(Routine) => {
 
 
 }
+
+export const addKaizen = async(kaizen, date) => {
+  const { data: {session}} = await supabase.auth.getSession()
+
+
+  return updateOrInsert("daily_logs", {
+    user_id: session.user.id,
+    Date: date,
+    kaizen: kaizen
+  }, {
+    user_id: session.user.id,
+    Date: date
+  })
+}
+
+
+
+
+export const fetchKaizen = async(date) => {
+   const { data: { session } } = await supabase.auth.getSession()
+    if (!session?.user) {
+    throw new Error("No active Supabase session. Log in again before saving timer data.")
+  }
+
+  const{data, error} = await supabase
+  .from('daily_logs')
+  .select('*')
+  .eq('user_id', session.user.id)
+  .eq('Date', date)
+  .maybeSingle()
+
+  if (error) throw error
+  return data 
+
+
+
+
+
+
+}
+
+

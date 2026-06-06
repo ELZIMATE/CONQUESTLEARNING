@@ -28,6 +28,8 @@ const useFeatures = () => {
     const[journalDate, setJournalDate] = useState(new Date().toLocaleDateString('en-CA'))
     const[weekstart, setWeekStart] = useState(new Date().toLocaleDateString('en-CA'))
     const[kaizen, setKaizen] = useState('')
+    const{kaizenopen, setKaizenOpen} = useState(false)
+    const[selectedDate2, setSelectedDate2] = useState(new Date().toLocaleDateString('en-CA'))
 
 
     
@@ -39,6 +41,8 @@ return{entry, setEntry, counter, setCounter, list, setList, running,
     setLeisureTime, submitted, setSubmitted, user, setUser, quote, setQuote, 
     quoteStatus, setQuoteStatus, quoteCollection, setQuoteCollection, selectedDate, 
     setSelectedDate, setDayData, dayData, listdate, setListDate, listdata, setListData, 
-    journalDate, setJournalDate, weekstart, setWeekStart, waketime, setWakeTime, sleepTime, setSleepTime, task, setTask, kaizen, setKaizen}
+    journalDate, setJournalDate, weekstart, setWeekStart, waketime, 
+    setWakeTime, sleepTime, setSleepTime, task, setTask, kaizen, setKaizen, 
+    setKaizenOpen, selectedDate2, setSelectedDate2}
 }
 export default useFeatures

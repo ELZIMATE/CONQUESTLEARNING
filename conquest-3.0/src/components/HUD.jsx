@@ -12,6 +12,7 @@ import NavBar from './Navbar'
 import JournalPrev from './Screens/JournalPreviewer'
 import QuotePrev from './Screens/QuotePreviewer'
 import ToDoListprev from './Screens/TodoListprev'
+import Kaizen from './Kaizen'
 
 const HUD = ({setSelectedDate, selectedDate, dayData, setDayData, listdata, list, quoteCollection, ...feats}) => {
 
@@ -30,6 +31,8 @@ const HUD = ({setSelectedDate, selectedDate, dayData, setDayData, listdata, list
         setSelectedDate(date.toISOString().split('T')[0])
 
     }
+
+    
 
 useEffect(() => { //synchoronisarion 
 const datechange = async() => {
@@ -72,6 +75,8 @@ datechange() //change it to the day
         <button onClick={frwdaday}> NEXT </button>
         <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}></input> {/*0 we set the input to the date we want, e obj delivers to change state*/} 
         <button onClick={backaday}> BACK </button>
+
+        <Kaizen {...feats} />
     </div>
 
 
@@ -136,6 +141,7 @@ datechange() //change it to the day
     <div style={{padding: `10px`, width:`100%`}}>
           
           <Widgets {...feats} />
+          
 
 
         </div>

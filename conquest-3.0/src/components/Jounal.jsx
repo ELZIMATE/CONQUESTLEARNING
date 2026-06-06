@@ -2,8 +2,21 @@
 import { useEffect } from "react"
 import { addentry, fetchjournal } from "../hooks/backendapi/Featuresapi"
 import NavBar from "./Navbar"
-const Journal = ({ dayData, journalDate, setJournalDate, setSelectedDate, selectedDate, status, setStatus, user, entry, setEntry, ...feats}) => {
 
+const Journal = ({ dayData, journalDate, setJournalDate, selectedDate2, setSelectedDate2, setSelectedDate, selectedDate, status, setStatus, user, entry, setEntry, ...feats}) => {
+
+
+        const backday = () => { //this here is to go back in time a day when clicked
+        const date = new Date(selectedDate) //we made a date storage const where here it will hold a new date object and assigning this date here to be whatever we put in the input date selector
+        date.setDate(date.getDate() - 1) //this will than take away one from the date
+        setSelectedDate(date.toISOString().split('T')[0]) //we set our selected date to be that date after we took away 1 
+        }
+        
+        const fwdday = () => { //this here is to go back in time a day when clicked
+        const date = new Date(selectedDate) //we made a date storage const where here it will hold a new date object and assigning this date here to be whatever we put in the input date selector
+        date.setDate(date.getDate() + 1) //this will than take away one from the date
+        setSelectedDate(date.toISOString().split('T')[0]) //we set our selected date to be that date after we took away 1 
+        }
 
 
     const makeEntry = async() => { //this function stores the data we need to pass to backend to put in the timer 
@@ -65,6 +78,8 @@ const Journal = ({ dayData, journalDate, setJournalDate, setSelectedDate, select
 
         <button onClick ={() => {makeEntry()}}>Submit</button> 
         <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}></input>
+        <button onClick={backday}>Previous Day</button>
+        <button onClick={fwdday}>Next Day</button>
 
         <p>{entry}</p>                          
         
@@ -79,5 +94,5 @@ const Journal = ({ dayData, journalDate, setJournalDate, setSelectedDate, select
 
 
 }
-
 export default Journal
+
