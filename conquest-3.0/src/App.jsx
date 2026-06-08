@@ -70,7 +70,7 @@ function App() {
   <Routes>
     
     <Route path = "/" element={<HUD {...feats} />}/> {/* creates a routing path which directs the website to the hud when "/" is put in the top url and puts all the hooks with ...feats copied in */}
-    <Route path = "/timer" element={<TimerScreen {...feats} />}/>
+    <Route path = "/ClockSetter" element={<TimerScreen {...feats} />}/>
     <Route path = "/jounal" element={<Journal {...feats} />}/>
     <Route path = "/ToDoList" element={<ToDoList {...feats} />}/>
     <Route path = "/ProgressBar" element={<ProgressBar {...feats}/>}/>

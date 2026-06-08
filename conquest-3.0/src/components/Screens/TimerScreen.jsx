@@ -4,9 +4,11 @@ import NavBar from "../Navbar"
 import Journal from "../Jounal"
 import TimeCard from "./TimeCard"
 import useFeatures from "../../hooks/useFeatures"
+import ClockSetter from "./ClockSetter" 
+import { addtimer } from "../../hooks/backendapi/Featuresapi"
 
 
-const TimerScreen = ({ waketime, sleeptime, setWakeTime, setSleepTime, ...feats}) => {
+const TimerScreen = ({clockset, setClockSet, setWakeTime, setSleepTime, openwake, setOpenWake, openSleep, setOpenSleep, workTime, sleeptime, waketime, setWorkTime, socialTime, setSocialTime, leisureTime, setLeisureTime, fitnessTime, setFitnessTime, isRunning, running, category, setCategory, user, entry, ...feats}) => {
 
     
 const formattime = (seconds) => {
@@ -29,9 +31,9 @@ const formattime = (seconds) => {
 
     const dayhrs = wakeSeconds - sleepSeconds
 
-    const remaining = dayhrs - (feats.workTime + feats.socialTime + feats.fitnessTime + feats.leisureTime)
+    const remaining = dayhrs - (workTime + socialTime + fitnessTime + leisureTime)
 
-    const untracked = 86400 - (feats.workTime + feats.socialTime + feats.fitnessTime + feats.leisureTime)
+    const untracked = 86400 - (workTime + socialTime + fitnessTime + leisureTime)
 
 
 
@@ -43,22 +45,37 @@ return(
     
     <h1>Start The clock</h1>
 
+        <div>
+        {openwake ?
+         <input value={waketime} type="time" onChange={(e) => setWakeTime(e.target.value)}></input> :
+         <b>{`Wake Time: ${waketime || `00:00`}`}</b>}
+            <button onClick={() => setOpenWake(!openwake)}> Set Wake Time </button>
+        {openSleep ?
+         <input value={sleeptime} type="time" onChange={(e) => setSleepTime(e.target.value)}></input> :
+         <b>{`Sleep Time: ${sleeptime || `00:00`}`}</b>}
+            <button onClick={() => setOpenSleep(!openSleep)}> Set Sleep Time </button>
+    </div>
+<button onClick={() => setClockSet(true)}>Add Timer</button>
+    {clockset &&
+        <ClockSetter setClockSet={setClockSet}
+        workTime={workTime} socialTime={socialTime} leisureTime={leisureTime} fitnessTime={fitnessTime}
+        isRunning={isRunning} running={running} category={category} setCategory={setCategory}
+        user={user} entry={entry} addtimer={addtimer} setWorkTime={setWorkTime} setSocialTime={setSocialTime} 
+        setLeisureTime={setLeisureTime} setFitnessTime={setFitnessTime}
+        />} {/* if clockset is true then pop up the clock setter component which is where we can set the timer and stuff and then pass the setClockSet setter to it so that way we can change the clockset value from there and make it disappear when we are done setting */}
+
+
     <div style={{position: 'absolute', top: '20px', right: '20px', color: 'purple'}}><b>Time Remaining: </b>{formattime(untracked)}</div>
     <div style={{position: 'absolute', top: '20px', left: '20px', color: 'orange'}}><b>Time Remaining: </b>{formattime(remaining)}</div>
-    <Timer {...feats} />
-    <ProgressBar {...feats}/>
-    <TimeCard label="Work" currentTime={feats.workTime} targetTime={30}/>
-    <TimeCard label="Social" currentTime={feats.socialTime} targetTime={39000}/>
-    <TimeCard label="Leisure" currentTime={feats.leisureTime} targetTime={39000}/>
-    <TimeCard label="Fitness" currentTime={feats.fitnessTime} targetTime={39000}/>
+    <ProgressBar workTime={workTime} socialTime={socialTime} fitnessTime={fitnessTime} leisureTime={leisureTime}/>
+    <TimeCard label="Work" currentTime={workTime} targetTime={30}/>
+    <TimeCard label="Social" currentTime={socialTime} targetTime={39000}/>
+    <TimeCard label="Leisure" currentTime={leisureTime} targetTime={39000}/>
+    <TimeCard label="Fitness" currentTime={fitnessTime} targetTime={39000}/>
 
     
     
-    <div>
 
-    <input value={waketime} type="time" onChange={(e) => setWakeTime(e.target.value)}></input>
-    <input value={sleeptime} type="time" onChange={(e) => setSleepTime(e.target.value)}></input>
-    </div>
     </>
 
 

@@ -6,15 +6,15 @@ import { fetchKaizen } from "../hooks/backendapi/Featuresapi"
 
 const Kaizen = ({user, date, selectedDate, kaizenopen, setKaizenOpen, kaizen, setKaizen, ...feats}) => {
 
-    useEffect(() => {
-            const getkaizen = async() => {
-                const date = selectedDate || new Date().toLocaleDateString('en-CA')
-                const data = await fetchKaizen(selectedDate, user.id) //wait for the kaizen for that date and user id
+    useEffect(() => { //sync kaizen so that way when the data changes it will get the kaizen for that date
+            const getkaizen = async() => { //runs when selected date changes to get the kaizen for that date and user id
+                const date = selectedDate || new Date().toLocaleDateString('en-CA') //if selected date is null then we just use the current date
+                const data = await fetchKaizen(selectedDate) //wait for the kaizen for that date and user id
                 //data now stores the kaizen for that date and user id
             
     
                 if (data){
-                setKaizen(data?.kaizen ?? '')   
+                setKaizen(data?.kaizen?? '')   
                 } else{
                     setKaizen(null)
                 }
@@ -33,11 +33,12 @@ const Kaizen = ({user, date, selectedDate, kaizenopen, setKaizenOpen, kaizen, se
 return(
     <>
     <div className="preview-card">
-    {kaizenopen ? 
-        <input value={kaizen} onChange={(e) => {setKaizen(e.target.value)}}/> :
-        <b>{kaizen || `Kaizen`}</b>}
-        <button onClick={() => {setKaizenOpen(!kaizenopen)
-        addKaizen(kaizen, selectedDate, user.id)
+    {kaizenopen ? //check if the kaizen button is set as true first  
+        <input value={kaizen} onChange={(e) => {setKaizen(e.target.value)}}/> : //pop up an input section if it is 
+        <b>{kaizen || `kaizen`}</b>} //display the kaizen for that day if there is one and if not just say kaizen
+        <button onClick={() => {setKaizenOpen(!kaizenopen) //toggle the kaizen input on and off with the button
+        addKaizen(kaizen, selectedDate, user.id) //when we click the button to add the kaizen it will send the kaizen, date, and user id to the backend to be stored in the database 
+        // and updated if there is already a kaizen for that date and user id
         } }> 1% BETTER </button>  
     
 

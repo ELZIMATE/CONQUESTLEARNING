@@ -76,7 +76,7 @@ datechange() //change it to the day
         <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}></input> {/*0 we set the input to the date we want, e obj delivers to change state*/} 
         <button onClick={backaday}> BACK </button>
 
-        <Kaizen {...feats} />
+        <Kaizen {...feats}/>
     </div>
 
 

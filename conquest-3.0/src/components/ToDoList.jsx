@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import {fetchList, addList, fetchRoutines, addRoutine} from "../hooks/backendapi/Featuresapi"
 import ToDoBar from "./Screens/ToDoBar"
 import TaskItem from "./Screens/TaskItem"
+import MonthCalendar from "./Screens/MonthCalendar"
 
 const getTaskKey = (item) => `${item.type || ''}|${item.priority || ''}|${item.task || item}` //make a function called get taskKey in here get the item type if empty use empty string instead and do same for setPriority
 //now try get tasktext if it doesnt exist just take the whole item obj. Each individual | between these are separators 
@@ -228,7 +229,12 @@ return(
         ></input>
         <button onClick={() => {ListRemoval(index)}}>Remove Task</button>
 
-    </li>)}
+    </li>
+
+)}
+
+
+<MonthCalendar/>
 </>
 )}
 

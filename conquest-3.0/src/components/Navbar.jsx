@@ -11,7 +11,7 @@ const NavBar = ({...feats}) => {
 
 
     <Link to="/"> Home </Link>
-    <Link to="/timer"> Timer </Link>
+    <Link to="./ClockSetter"> Timer </Link>
     <Link to="/jounal"> Journal </Link>
     <Link to="/ToDoList"> ToDoList </Link>
     <Link to="/QuoteBook"> QuoteBook</Link>

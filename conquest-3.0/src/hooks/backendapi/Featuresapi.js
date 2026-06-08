@@ -312,11 +312,11 @@ export const addKaizen = async(kaizen, date) => {
 
   return updateOrInsert("daily_logs", {
     user_id: session.user.id,
-    Date: date,
+    date: date,
     kaizen: kaizen
   }, {
     user_id: session.user.id,
-    Date: date
+    date: date
   })
 }
 
@@ -333,7 +333,7 @@ export const fetchKaizen = async(date) => {
   .from('daily_logs')
   .select('*')
   .eq('user_id', session.user.id)
-  .eq('Date', date)
+  .eq('date', date)
   .maybeSingle()
 
   if (error) throw error
@@ -347,3 +347,20 @@ export const fetchKaizen = async(date) => {
 }
 
 
+export const fetchMonthLogs = async(year, month) => {
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session?.user) throw new Error("No active session.")
+
+  const start = `${year}-${String(month).padStart(2, '0')}-01`
+  const end = `${year}-${String(month).padStart(2, '0')}-${new Date(year, month, 0).getDate()}`
+
+  const { data, error } = await supabase
+    .from('daily_logs')
+    .select('*')
+    .eq('user_id', session.user.id)
+    .gte('date', start)
+    .lte('date', end)
+
+  if (error) throw error
+  return data
+}
